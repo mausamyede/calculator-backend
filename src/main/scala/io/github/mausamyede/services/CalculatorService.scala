@@ -7,9 +7,13 @@ import scala.collection.mutable
 class CalculatorService(repo: CalculatorRepo) {
 
   def evaluateExpression(expression: String): String = {
-    val result = evaluate(expression)
-    repo.write(s"$expression = $result")
-    repo.readLatest10Results.mkString("\n")
+    try {
+      val result = evaluate(expression)
+      repo.write(s"$expression = $result")
+      repo.readLatest10Results.mkString("\n")
+    } catch {
+      case _: Exception => "Something went wrong"
+    }
   }
 
   private[services] def evaluate(expression: String): Double = {
