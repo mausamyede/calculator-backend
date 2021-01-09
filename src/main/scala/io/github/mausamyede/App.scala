@@ -20,8 +20,9 @@ object App extends JsonSupport {
           }
         }
       }
-
-    Await.result(Http().newServerAt("0.0.0.0", 8080).bind(route), 10.seconds)
-    println(s"Calculator server online at http://0.0.0.0:8080/")
+    val host = "0.0.0.0"
+    val port = sys.env.getOrElse("PORT", "8080").toInt
+    Await.result(Http().newServerAt(host, port).bind(route), 10.seconds)
+    println(s"Calculator server online at http://$host:$port/")
   }
 }
