@@ -9,7 +9,7 @@ class CalculatorService(repo: CalculatorRepo) {
   def evaluateExpression(expression: String): String = {
     val result = evaluate(expression)
     repo.write(s"$expression = $result")
-    repo.readFirst10Results.mkString("\n")
+    repo.readLatest10Results.mkString("\n")
   }
 
   private[services] def evaluate(expression: String): Double = {

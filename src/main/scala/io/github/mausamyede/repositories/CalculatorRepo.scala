@@ -9,9 +9,9 @@ class CalculatorRepo(storeFilePath: Path) {
     Files.write(storeFilePath, s"$evalResult\n".getBytes, StandardOpenOption.APPEND)
   }
 
-  def readFirst10Results: List[String] = {
+  def readLatest10Results: List[String] = {
     Using(Source.fromFile(storeFilePath.toFile)) {
-      _.getLines().toList.take(10)
+      _.getLines().toList.reverse.take(10)
     }.get
   }
 }

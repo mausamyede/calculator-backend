@@ -25,24 +25,64 @@ class CalculatorRepoTest
   }
 
   test(
-    "readFirst10Results should return first 10 lines from store file if exists"
+    "readLatest10Results should return last 10 lines from store file if exists"
   ) {
     val repo = new CalculatorRepo(storeFilePath)
     val str =
       "line1\nline2\nline3\nline4\nline5\nline6\nline7\nline8\nline9\nline10\n"
     Files.write(storeFilePath, str.getBytes)
 
-    repo.readFirst10Results shouldBe List(
-      "line1",
-      "line2",
-      "line3",
-      "line4",
-      "line5",
-      "line6",
-      "line7",
-      "line8",
+    repo.readLatest10Results shouldBe List(
+      "line10",
       "line9",
-      "line10"
+      "line8",
+      "line7",
+      "line6",
+      "line5",
+      "line4",
+      "line3",
+      "line2",
+      "line1"
+    )
+  }
+
+  test(
+    "readLatest10Results should return all lines from store file if less than 10"
+  ) {
+    val repo = new CalculatorRepo(storeFilePath)
+    val str =
+      "line1\nline2\nline3\nline4\nline5\nline6\n"
+    Files.write(storeFilePath, str.getBytes)
+
+    repo.readLatest10Results shouldBe List(
+      "line6",
+      "line5",
+      "line4",
+      "line3",
+      "line2",
+      "line1"
+    )
+  }
+
+  test(
+    "readLatest10Results should return last 10 lines from store file if more than 10"
+  ) {
+    val repo = new CalculatorRepo(storeFilePath)
+    val str =
+      "line1\nline2\nline3\nline4\nline5\nline6\nline7\nline8\nline9\nline10\nline11\nline12\n"
+    Files.write(storeFilePath, str.getBytes)
+
+    repo.readLatest10Results shouldBe List(
+      "line12",
+      "line11",
+      "line10",
+      "line9",
+      "line8",
+      "line7",
+      "line6",
+      "line5",
+      "line4",
+      "line3"
     )
   }
 }

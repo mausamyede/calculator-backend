@@ -8,7 +8,7 @@ class CalculatorServiceTest extends FunSuite with Matchers {
   private val mockRepo: CalculatorRepo = mock[CalculatorRepo]
 
   test("should evaluate and delegate result to repository") {
-    when(mockRepo.readFirst10Results).thenReturn(List("2+2 = 4.0", "3*3 = 9.0"))
+    when(mockRepo.readLatest10Results).thenReturn(List("2+2 = 4.0", "3*3 = 9.0"))
     val service = new CalculatorService(mockRepo)
 
     val result = service.evaluateExpression("2+2")
