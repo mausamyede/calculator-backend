@@ -2,7 +2,6 @@ package io.github.mausamyede
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Directives._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt

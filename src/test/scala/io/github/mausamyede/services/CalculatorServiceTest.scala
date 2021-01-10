@@ -17,6 +17,25 @@ class CalculatorServiceTest extends FunSuite with Matchers {
     result shouldBe "2+2 = 4.0\n3*3 = 9.0"
   }
 
+  test("should return error if unable to write to file") {
+    when(mockRepo.readLatest10Results).thenReturn(List("2+2 = 4.0", "3*3 = 9.0"))
+    when(mockRepo.write("2+2 = 4.0")).thenThrow(new RuntimeException)
+    val service = new CalculatorService(mockRepo)
+
+    val result = service.evaluateExpression("2+2")
+
+    result shouldBe "Something went wrong"
+  }
+
+  test("should return error if unable to parse expression") {
+    when(mockRepo.readLatest10Results).thenReturn(List("2+2 = 4.0", "3*3 = 9.0"))
+    val service = new CalculatorService(mockRepo)
+
+    val result = service.evaluateExpression("abcd")
+
+    result shouldBe "Something went wrong"
+  }
+
   test("evaluate should return result for expression containing subtraction") {
     val service = new CalculatorService(mockRepo)
 
