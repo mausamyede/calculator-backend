@@ -3,6 +3,8 @@ package io.github.mausamyede
 import akka.Done
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.model.ws.{BinaryMessage, Message, TextMessage}
+import akka.http.scaladsl.server.Directives.{get, handleWebSocketMessages, parameters, path}
+import akka.http.scaladsl.server.Route
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
 import akka.stream.{CompletionStrategy, Materializer, OverflowStrategy}
 import io.github.mausamyede.actors.CalculatorActor
@@ -13,7 +15,17 @@ class Calculator(implicit system: ActorSystem, mat: Materializer) {
 
   private val calcActor = system.actorOf(Props(classOf[CalculatorActor]))
 
-  def flow(userName: String): Flow[Message, Message, Any] = {
+  def route: Route = {
+    path("evaluate") {
+      get {
+        parameters("name") { name =>
+          handleWebSocketMessages(flow(name))
+        }
+      }
+    }
+  }
+
+  private def flow(userName: String): Flow[Message, Message, Any] = {
     val (actorRef: ActorRef, publisher: Publisher[TextMessage.Strict]) =
       Source
         .actorRef[String](

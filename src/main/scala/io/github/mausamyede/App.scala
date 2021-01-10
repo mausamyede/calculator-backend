@@ -12,14 +12,8 @@ object App extends JsonSupport {
     implicit val system: ActorSystem = ActorSystem("calculatorApp")
     val calculator = new Calculator
 
-    val route =
-      path("evaluate") {
-        get {
-          parameters("name") { name =>
-            handleWebSocketMessages(calculator.flow(name))
-          }
-        }
-      }
+    val route = calculator.route
+
     val host = "0.0.0.0"
     val port = sys.env.getOrElse("PORT", "8080").toInt
     Await.result(Http().newServerAt(host, port).bind(route), 10.seconds)
