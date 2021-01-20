@@ -2,7 +2,7 @@ package io.github.mausamyede
 
 import akka.Done
 import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.http.scaladsl.model.ws.{BinaryMessage, Message, TextMessage}
+import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import akka.http.scaladsl.server.Directives.{get, handleWebSocketMessages, parameters, path}
 import akka.http.scaladsl.server.Route
 import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
